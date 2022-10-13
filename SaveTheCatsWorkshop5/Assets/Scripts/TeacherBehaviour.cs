@@ -16,6 +16,7 @@ public class TeacherBehaviour : MonoBehaviour
     private TeacherStateEnum teacherState = new TeacherStateEnum();
     private Vector3 targetWpLocation;
     private Vector3 lastLocation;
+    private Vector3 secondToLastLocation;
     private NavMeshAgent navMeshAgent;
 
     private enum TeacherStateEnum
@@ -64,7 +65,7 @@ public class TeacherBehaviour : MonoBehaviour
         GameObject closestWP = null;
         foreach (var wp in wayPoints)
         {
-            if (wp.transform.position != lastLocation)
+            if (wp.transform.position != lastLocation && wp.transform.position != secondToLastLocation)
             {
                 if (closestWP == null)
                 {
@@ -89,6 +90,7 @@ public class TeacherBehaviour : MonoBehaviour
         transform.rotation.SetLookRotation(targetWpLocation * Time.deltaTime);
         if (Vector3.Distance(transform.position, targetWpLocation) <= 1.5f)
         {
+            secondToLastLocation = lastLocation;
             lastLocation = targetWpLocation;
             teacherState = TeacherStateEnum.Idle;
         }
