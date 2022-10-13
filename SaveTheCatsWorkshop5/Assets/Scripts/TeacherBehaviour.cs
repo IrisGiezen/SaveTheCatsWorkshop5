@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.AI;
 using static UnityEngine.GraphicsBuffer;
@@ -19,6 +20,7 @@ public class TeacherBehaviour : MonoBehaviour
     private Vector3 lastLocation;
     private Vector3 secondToLastLocation;
     private NavMeshAgent navMeshAgent;
+    private Animator _animatorController;
 
     private enum TeacherStateEnum
     {
@@ -29,6 +31,7 @@ public class TeacherBehaviour : MonoBehaviour
 
     void Start()
     {
+        _animatorController = GetComponentInChildren<Animator>();
         wayPoints = GameObject.FindGameObjectsWithTag("TeacherWaypoint");
         player = GameObject.FindGameObjectWithTag("Player");
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -48,13 +51,16 @@ public class TeacherBehaviour : MonoBehaviour
         switch (teacherState)
         {
             case TeacherStateEnum.Idle:
+                _animatorController.SetInteger("teacherState", 0);
                 StartPatrolling();
                 break;
-            case TeacherStateEnum.Chase:
-                Chase();
-                break;
             case TeacherStateEnum.Walk:
+                _animatorController.SetInteger("teacherState", 1);
                 Walk();
+                break;
+            case TeacherStateEnum.Chase:
+                _animatorController.SetInteger("teacherState", 2);
+                Chase();
                 break;
             default:
                 break;
