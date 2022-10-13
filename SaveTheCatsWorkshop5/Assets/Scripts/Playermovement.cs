@@ -27,8 +27,8 @@ public class Playermovement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
     }
-
-    void Update()
+  
+    void FixedUpdate()
     {
         if (characterController.isGrounded)
         {
@@ -52,13 +52,23 @@ public class Playermovement : MonoBehaviour
             Instantiate(Claw, transform.position + new Vector3(0, 0.2f, 0.35f), transform.rotation);
         }
 
+        if (Input.GetKey(KeyCode.J))
+            transform.Rotate(-Vector3.up * 90 * Time.deltaTime);
+
+        if (Input.GetKey(KeyCode.L))
+            transform.Rotate(Vector3.up * 90 * Time.deltaTime);
+
+        
+
 
         moveDirection.y -= gravity * Time.deltaTime;
-
-        // Move the controller
-        characterController.Move(moveDirection * Time.deltaTime);
         anim.SetFloat("x", moveDirection.x);
         anim.SetFloat("z", moveDirection.z);
+
+        // Move the controller
+        moveDirection = this.transform.TransformDirection(moveDirection);
+        characterController.Move(moveDirection * Time.deltaTime);
+
     }
 
 
@@ -70,7 +80,7 @@ public class Playermovement : MonoBehaviour
         sidewardInput = movementVector.x;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void OnControllerColliderHit(ControllerColliderHit collision)
     {
         if (collision.gameObject.CompareTag("Food"))
         {
@@ -85,6 +95,7 @@ public class Playermovement : MonoBehaviour
             Destroy(collision.gameObject);
             speed -= 2;
         }
+
     }
 
     private void OnTriggerEnter(Collider collider)
