@@ -746,6 +746,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4689359383029816666, guid: af1a09419eed112449ffa16c94933e1a,
         type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4689359383029816666, guid: af1a09419eed112449ffa16c94933e1a,
+        type: 3}
       propertyPath: m_TagString
       value: TeacherWaypoint
       objectReference: {fileID: 0}
