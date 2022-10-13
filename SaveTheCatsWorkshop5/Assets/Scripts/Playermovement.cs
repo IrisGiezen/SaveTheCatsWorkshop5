@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
+
 
 public class Playermovement : MonoBehaviour
 {
@@ -10,16 +12,17 @@ public class Playermovement : MonoBehaviour
     public float jumpSpeed = 8.0f;
     public float gravity = 20.0f;
 
+    private float forwardInput;
+    private float sidewardInput;
+
     private Vector3 moveDirection = Vector3.zero;
     private Animator anim;
 
     public GameObject target;
 
     public Camera Scenecamera;
-    private Vector3 mousePosition;
 
-    private Ray _ray;
-    private RaycastHit _hit;
+    public GameObject Claw;
 
     void Start()
     {
@@ -49,6 +52,7 @@ public class Playermovement : MonoBehaviour
         if (Input.GetButton("Fire2"))
         {
             anim.SetTrigger("attacking");
+            Instantiate(Claw, transform.position + new Vector3(0,0.2f,0.35f), transform.rotation);
         }
 
 
@@ -59,4 +63,15 @@ public class Playermovement : MonoBehaviour
         anim.SetFloat("x", moveDirection.x);
         anim.SetFloat("z", moveDirection.z);
     }
+
+
+    private void OnMove(InputValue movementValue)
+    {
+        Vector2 movementVector = movementValue.Get<Vector2>();
+
+        forwardInput = movementVector.y;
+        sidewardInput = movementVector.x;
+
+    }
+
 }
