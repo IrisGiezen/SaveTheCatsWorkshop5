@@ -14,10 +14,14 @@ public class Health : MonoBehaviour
 
     public GameObject GothitScreen;
 
+
+    public Transform LastCheckpoint;
+
     // Start is called before the first frame update
     void Start()
     {
         totalhealthBar.fillAmount = HpCurrent / 10;
+        LastCheckpoint = transform;
     }
 
     // Update is called once per frame
@@ -50,9 +54,16 @@ public class Health : MonoBehaviour
             HpCurrent = HpCurrent - 1;
             gotHurt();
         }
+
+        if (collision.gameObject.CompareTag("checkpoint"))
+        {
+            LastCheckpoint = collision.transform;
+        }
+
+
     }
 
-        private void OnCollisionEnter(Collision collision)
+    private void OnCollisionEnter(Collision collision)
     {
         Debug.Log(collision);
         if (collision.transform.tag == "Enemy")
@@ -60,6 +71,12 @@ public class Health : MonoBehaviour
             HpCurrent = HpCurrent - 1;
             gotHurt();
         }
+
+        if (collision.gameObject.CompareTag("checkpoint"))
+        {
+            LastCheckpoint = collision.transform;
+        }
+
     }
     void gotHurt()
     {
@@ -67,6 +84,7 @@ public class Health : MonoBehaviour
         color.a = 0.8f;
 
         GothitScreen.GetComponent<Image>().color = color;
+        this.transform.position = LastCheckpoint.position + new Vector3(0,2,0);
     }
 
 }
