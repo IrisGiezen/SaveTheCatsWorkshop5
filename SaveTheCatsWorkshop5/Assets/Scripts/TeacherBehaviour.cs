@@ -13,6 +13,7 @@ public class TeacherBehaviour : MonoBehaviour
     [SerializeField] private float teacherWidth = 1;
     [SerializeField] private BoxCollider teacherFov;
     private GameObject[] wayPoints;
+    private GameObject player;
     private TeacherStateEnum teacherState = new TeacherStateEnum();
     private Vector3 targetWpLocation;
     private Vector3 lastLocation;
@@ -29,6 +30,7 @@ public class TeacherBehaviour : MonoBehaviour
     void Start()
     {
         wayPoints = GameObject.FindGameObjectsWithTag("TeacherWaypoint");
+        player = GameObject.FindGameObjectWithTag("Player");
         navMeshAgent = GetComponent<NavMeshAgent>();
         teacherFov.center = new Vector3(0, (teacherHeight/2), (viewDistance / 2));
         teacherFov.size = new Vector3(teacherWidth,teacherHeight,viewDistance);
@@ -98,12 +100,14 @@ public class TeacherBehaviour : MonoBehaviour
 
     private void Chase()
     {
+        transform.rotation.SetLookRotation(player.transform.position * Time.deltaTime);
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Player")
         {
+            navMeshAgent.SetDestination(player.transform.position);
             teacherState = TeacherStateEnum.Chase;
         }
     }
