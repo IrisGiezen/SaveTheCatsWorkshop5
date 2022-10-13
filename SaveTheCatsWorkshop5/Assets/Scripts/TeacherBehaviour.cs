@@ -5,6 +5,7 @@ using System.Runtime.InteropServices;
 using UnityEditor.Animations;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations;
 using static UnityEngine.GraphicsBuffer;
 
 public class TeacherBehaviour : MonoBehaviour
@@ -57,6 +58,7 @@ public class TeacherBehaviour : MonoBehaviour
             case TeacherStateEnum.Walk:
                 _animatorController.SetInteger("teacherState", 1);
                 Walk();
+                Look();
                 break;
             case TeacherStateEnum.Chase:
                 _animatorController.SetInteger("teacherState", 2);
@@ -64,6 +66,24 @@ public class TeacherBehaviour : MonoBehaviour
                 break;
             default:
                 break;
+        }
+    }
+
+    private void Look()
+    {
+        RaycastHit hit;
+        if (Physics.BoxCast(transform.position, new Vector3(0.5f, 0.5f, 0.5f), transform.forward, out hit, transform.rotation, viewDistance))
+        {
+            if (hit.collider.gameObject.tag == "Player")
+            {
+                Debug.Log("I Chase Cat");
+                navMeshAgent.SetDestination(player.transform.position);
+                teacherState = TeacherStateEnum.Chase;
+            }
+        }
+        else
+        {
+            teacherState = TeacherStateEnum.Idle;
         }
     }
 
@@ -108,22 +128,5 @@ public class TeacherBehaviour : MonoBehaviour
     {
         Debug.Log("Start Chasing");
         transform.rotation.SetLookRotation(player.transform.position * Time.deltaTime);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            navMeshAgent.SetDestination(player.transform.position);
-            teacherState = TeacherStateEnum.Chase;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Player")
-        {
-            teacherState = TeacherStateEnum.Idle;
-        }
     }
 }
