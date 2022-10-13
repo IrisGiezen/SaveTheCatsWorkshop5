@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class ResetScript : MonoBehaviour
 {
-    private int scene = 2;
+    private int scene = 1;
 
     private void OnMouseDown()
     {
