@@ -2,7 +2,12 @@ using UnityEngine;
 
 public class ClawsController : MonoBehaviour
 {
-    private new GameObject gameObject;
+
+    private void Awake()
+    {
+        Destroy(gameObject, 0.2f);
+    }
+
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -12,4 +17,14 @@ public class ClawsController : MonoBehaviour
             Destroy(collision.gameObject);
         }
     }
+
+    private void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.CompareTag("Obstacle"))
+        {
+            Debug.Log("Collision Detected");
+            Destroy(collider.gameObject);
+        }
+    }
+
 }
