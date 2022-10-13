@@ -106,6 +106,7 @@ public class TeacherBehaviour : MonoBehaviour
 
     private void Chase()
     {
+        Debug.Log("Start Chasing");
         transform.rotation.SetLookRotation(player.transform.position * Time.deltaTime);
     }
 
