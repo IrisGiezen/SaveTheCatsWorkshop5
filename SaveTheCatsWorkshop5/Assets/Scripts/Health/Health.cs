@@ -14,7 +14,6 @@ public class Health : MonoBehaviour
 
     public GameObject GothitScreen;
 
-
     public Transform LastCheckpoint;
 
     // Start is called before the first frame update
