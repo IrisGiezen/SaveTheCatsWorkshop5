@@ -27,8 +27,8 @@ public class Playermovement : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
     }
-
-    void Update()
+  
+    void FixedUpdate()
     {
         if (characterController.isGrounded)
         {
@@ -70,7 +70,7 @@ public class Playermovement : MonoBehaviour
         sidewardInput = movementVector.x;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void OnControllerColliderHit(ControllerColliderHit collision)
     {
         if (collision.gameObject.CompareTag("Food"))
         {
@@ -85,6 +85,7 @@ public class Playermovement : MonoBehaviour
             Destroy(collision.gameObject);
             speed -= 2;
         }
+
     }
 
     private void OnTriggerEnter(Collider collider)
