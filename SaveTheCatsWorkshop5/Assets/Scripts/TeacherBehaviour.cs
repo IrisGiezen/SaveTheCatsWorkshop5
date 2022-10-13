@@ -86,7 +86,7 @@ public class TeacherBehaviour : MonoBehaviour
 
     private void Walk()
     {
-        transform.LookAt(targetWpLocation);
+        transform.rotation.SetLookRotation(targetWpLocation * Time.deltaTime);
         if (Vector3.Distance(transform.position, targetWpLocation) <= 1.5f)
         {
             lastLocation = targetWpLocation;
