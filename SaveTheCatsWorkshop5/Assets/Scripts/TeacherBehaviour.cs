@@ -44,6 +44,7 @@ public class TeacherBehaviour : MonoBehaviour
     void Update()
     {
         //Debug.Log("State: " + teacherState.ToString());
+        Look();
         StateMachine();
     }
 
@@ -58,7 +59,6 @@ public class TeacherBehaviour : MonoBehaviour
             case TeacherStateEnum.Walk:
                 _animatorController.SetInteger("teacherState", 1);
                 Walk();
-                Look();
                 break;
             case TeacherStateEnum.Chase:
                 _animatorController.SetInteger("teacherState", 2);
@@ -83,7 +83,8 @@ public class TeacherBehaviour : MonoBehaviour
         }
         else
         {
-            teacherState = TeacherStateEnum.Idle;
+            navMeshAgent.SetDestination(targetWpLocation);
+            teacherState = TeacherStateEnum.Walk;
         }
     }
 
