@@ -59,7 +59,11 @@ public class Health : MonoBehaviour
             LastCheckpoint = collision.transform;
         }
 
-
+        Debug.Log(collision);
+        if (collision.transform.tag == "Exit")
+        {
+            SceneManager.LoadScene(2);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
